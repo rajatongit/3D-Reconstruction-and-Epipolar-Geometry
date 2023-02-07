@@ -49,10 +49,7 @@ def eightpoint(pts1, pts2, M):
 
     T =  np.diag([1/M,1/M,1])
 
-    unscaled_F = T.T.dot(f).dot(T)
-    # print('unscaled_F :', unscaled_F)
-
-    return unscaled_F
+    return T.T.dot(f).dot(T)
 
 '''
 Q2.2: Seven Point Algorithm
@@ -124,10 +121,7 @@ Q3.1: Compute the essential matrix E.
     Output: E, the essential matrix
 '''
 def essentialMatrix(F, K1, K2):
-    # Replace pass by your implementation
-
-    E = K2.T.dot(F).dot(K1)
-    return E
+    return K2.T.dot(F).dot(K1)
 
 
 '''
@@ -337,8 +331,8 @@ def ransacF(pts1, pts2, M):
     threshold = 1e-3
 
     epochs = 1000
-    for e in range(epochs):
-        points_index = random.sample(range(0, pts1.shape[0]), 7)
+    for _ in range(epochs):
+        points_index = random.sample(range(pts1.shape[0]), 7)
         # print(points_index)
         sevenpoints_1 = []
         sevenpoints_2 = []
@@ -399,8 +393,11 @@ def rodrigues(r):
     theta = np.linalg.norm(r, 2)
     u = r/theta
     u = u.reshape(3,1)
-    R = np.eye(3,3)*np.cos(theta) + (1 - np.cos(theta))*(u.dot(u.T)) + skew(u)*(np.sin(theta))
-    return R
+    return (
+        np.eye(3, 3) * np.cos(theta)
+        + (1 - np.cos(theta)) * (u.dot(u.T))
+        + skew(u) * (np.sin(theta))
+    )
 
 '''
 Q5.2: Inverse Rodrigues formula.

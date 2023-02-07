@@ -16,17 +16,18 @@ This is *not* a correctness check
 Written by Chen Kong, 2018.
 """
 
+
 import sys, os.path
 from zipfile import ZipFile as ZipFile
 zip_path = sys.argv[1]
 
 if os.path.isfile(zip_path):
-    print('{} is found.'.format(zip_path))
+    print(f'{zip_path} is found.')
 else:
     print('Could not find handin zip.')
 
 andrewid = os.path.basename(zip_path).split('.')[0]
-print('Your Andrew Id is {}.'.format(andrewid))
+print(f'Your Andrew Id is {andrewid}.')
 
 with ZipFile(zip_path, 'r') as zip:
     filelist = zip.namelist()
@@ -45,7 +46,7 @@ correct_files = [
 correct = True
 for f in correct_files:
     if os.path.join(andrewid, f) not in filelist:
-        print('{} is not found.'.format(os.path.join(andrewid, f)))
+        print(f'{os.path.join(andrewid, f)} is not found.')
         correct = False
 
 if correct:
