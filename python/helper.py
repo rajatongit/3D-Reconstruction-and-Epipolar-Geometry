@@ -75,10 +75,11 @@ def _objective_F(f, pts1, pts2):
     Fp1 = F.dot(hpts1.T)
     FTp2 = F.T.dot(hpts2.T)
 
-    r = 0
-    for fp1, fp2, hp2 in zip(Fp1.T, FTp2.T, hpts2):
-        r += (hp2.dot(fp1))**2 * (1/(fp1[0]**2 + fp1[1]**2) + 1/(fp2[0]**2 + fp2[1]**2))
-    return r
+    return sum(
+        (hp2.dot(fp1)) ** 2
+        * (1 / (fp1[0] ** 2 + fp1[1] ** 2) + 1 / (fp2[0] ** 2 + fp2[1] ** 2))
+        for fp1, fp2, hp2 in zip(Fp1.T, FTp2.T, hpts2)
+    )
 
 def refineF(F, pts1, pts2):
     f = scipy.optimize.fmin_powell(
